@@ -1,10 +1,36 @@
 body {
   font-family: sans-serif;
   background-color: #e8f0fe;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d1ddee;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.nav-links a {
+  color: #475261;
+  text-decoration: none;
+  margin-left: 20px;
 }
 
 .container {
@@ -13,7 +39,14 @@ body {
   border-radius: 10px;
   width: 600px;
   box-shadow: 10px 10px 20px #c1ccd8, -10px -10px 20px #e1eaf9;
+  margin: 80px auto 20px; /* Added margin to create space for the navbar */
 }
+.logo {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+
 
 .input-area {
   margin-bottom: 20px;
@@ -98,9 +131,11 @@ body {
   box-shadow: 3px 3px 6px #c1ccd8, -3px -3px 6px #e1eaf9;
 }
 
-.like-btn.liked, .comment-like-btn.liked, .reply-like-btn.liked {
-    background-color: #e08c98;
-    color: #e8f0fe;
+.like-btn.liked,
+.comment-like-btn.liked,
+.reply-like-btn.liked {
+  background-color: #e08c98;
+  color: #e8f0fe;
 }
 .comments {
   margin-top: 10px;

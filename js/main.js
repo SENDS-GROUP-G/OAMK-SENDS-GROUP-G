@@ -1,33 +1,39 @@
-import { createPost } from './addpost.js';
-import { createComment, createCommentInput } from './comment.js';
+const BASE_URL = 'https://your-api-url.com';
 
-const postInput = document.getElementById('postInput');
-const addPostBtn = document.getElementById('addPostBtn');
-const postsContainer = document.getElementById('postsContainer');
+// Fetch posts
+fetch(`${BASE_URL}/posts`)
+  .then(res => res.json())
+  .then(data => {
+    const postsSection = document.getElementById('posts');
+    data.forEach(post => {
+      const article = document.createElement('article');
+      const title = document.createElement('h2');
+      const content = document.createElement('p');
+      const likesInfo = document.createElement('p');
+      const commentsContainer = document.createElement('div');
 
-addPostBtn.addEventListener('click', createPostFromInput);
-postInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        createPostFromInput();
-    }
-});
+      title.textContent = `Post ${post.postId}`;
+      content.textContent = post.Content;
+      likesInfo.textContent = `Likes: ${post.likeCount} (${post.likeState ? 'Liked' : 'Not Liked'})`;
 
-function createPostFromInput() {
-    const postContent = postInput.value;
-    if (postContent.trim() !== '') {
-        createPost(postContent);
-        postInput.value = '';
-    }
-}
+      article.appendChild(title);
+      article.appendChild(content);
+      article.appendChild(likesInfo);
+      postsSection.appendChild(article);
 
-postsContainer.addEventListener('click', (event) => {
-    if (event.target.classList.contains('delete-post-btn')) {
-        const post = event.target.closest('.post');
-        post.remove();
-    } else if (event.target.classList.contains('comment-btn')) {
-        const post = event.target.closest('.post');
-        const commentsSection = post.querySelector('.comments');
-        if (commentsSection.querySelector('input')) return;
-        const commentInput = createCommentInput(commentsSection);
-    }
-});
+      // Fetch comments for this post
+      fetch(`${BASE_URL}/posts/${post.postId}/comments`)
+        .then(res => res.json())
+        .then(commentsData => {
+          commentsData.forEach(comment => {
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.textContent = `${comment.commentContent} (User: ${comment.userId}, Comment ID: ${comment.commentId})`;
+            commentsContainer.appendChild(commentElement);
+          });
+          article.appendChild(commentsContainer);
+        })
+        .catch(error => console.error(`Error fetching comments for post ${post.postId}:`, error));
+    });
+  })
+  .catch(error => console.error('Error fetching posts:', error));

@@ -1,71 +1,60 @@
-const backendUrl = 'http://localhost:3001';
+const backendUrl = "http://localhost:3001";
 
-// Fetch posts
-fetch(`${backendUrl}`)
-  .then(response => response.json())
-  .then(data => {
-    const postsContainer = document.getElementById('posts');
+async function fetchPosts() {
+  try {
+    const response = await fetch(`${backendUrl}/`);
+    const posts = await response.json();
+    const postsContainer = document.getElementById("posts");
+    for (const post of posts) {
+      const postElement = document.createElement("div");
+      postElement.classList.add("post");
 
-    data.forEach(post => {
-      const postElement = createPostElement(post);
+      const titleElement = document.createElement("h2");
+      titleElement.textContent = post.title;
+      postElement.appendChild(titleElement);
+
+      const contentElement = document.createElement("p");
+      contentElement.textContent = post.post_content;
+      postElement.appendChild(contentElement);
+
+      const commentsElement = document.createElement("div");
+      commentsElement.textContent = "Loading comments...";
+      postElement.appendChild(commentsElement);
+
+      await fetchComments(post.post_id, commentsElement);
+
       postsContainer.appendChild(postElement);
-    });
-  })
-  .catch(error => console.error('Error fetching posts:', error));
+    }
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+}
 
-// Create post element
-function createPostElement(post) {
-  const postElement = document.createElement('div');
-  postElement.classList.add('post');
+async function fetchComments(postId, commentsElement) {
+  try {
+    const response = await fetch(`${backendUrl}/posts/${postId}/comments`);
+    const comments = await response.json();
+    commentsElement.innerHTML = "";
+    const commentsHeading = document.createElement("h3");
+    commentsHeading.textContent = "Comments";
+    commentsElement.appendChild(commentsHeading);
 
-  const postHeader = document.createElement('div');
-  postHeader.classList.add('post-header');
-
-  const userIdElement = document.createElement('span');
-  userIdElement.textContent = `User ID: ${post.userId}`;
-  postHeader.appendChild(userIdElement);
-
-  const likeCountElement = document.createElement('span');
-  likeCountElement.textContent = `Likes: ${post.likeCount}`;
-  postHeader.appendChild(likeCountElement);
-
-  postElement.appendChild(postHeader);
-
-  const postContentElement = document.createElement('p');
-  postContentElement.classList.add('post-content');
-  postContentElement.textContent = post.content;
-  postElement.appendChild(postContentElement);
-
-  const commentsContainer = document.createElement('div');
-  commentsContainer.classList.add('comments');
-  postElement.appendChild(commentsContainer);
-
-  // Fetch comments for the post
-  fetch(`${backendUrl}/posts/${post.postId}/comments`)
-    .then(response => response.json())
-    .then(comments => {
-      comments.forEach(comment => {
-        const commentElement = createCommentElement(comment);
-        commentsContainer.appendChild(commentElement);
+    if (comments.length === 0) {
+      const noCommentsMessage = document.createElement("p");
+      noCommentsMessage.textContent = "No comments yet.";
+      commentsElement.appendChild(noCommentsMessage);
+    } else {
+      const commentsList = document.createElement("ul");
+      comments.forEach((comment) => {
+        const commentItem = document.createElement("li");
+        commentItem.textContent = comment.comment_content;
+        commentsList.appendChild(commentItem);
       });
-    })
-    .catch(error => console.error(`Error fetching comments for post ${post.postId}:`, error));
-
-  return postElement;
+      commentsElement.appendChild(commentsList);
+    }
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
 }
 
-// Create comment element
-function createCommentElement(comment) {
-  const commentElement = document.createElement('div');
-  commentElement.classList.add('comment');
-
-  const userIdElement = document.createElement('span');
-  userIdElement.textContent = `User ID: ${comment.userId}`;
-  commentElement.appendChild(userIdElement);
-
-  const commentContentElement = document.createElement('p');
-  commentContentElement.textContent = comment.commentContent;
-  commentElement.appendChild(commentContentElement);
-
-  return commentElement;
-}
+fetchPosts();

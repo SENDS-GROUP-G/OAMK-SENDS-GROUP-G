@@ -1,38 +1,155 @@
+
 body {
-  padding: 20px;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #ECEAE5;
+  display: flex;
+  justify-content: center;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+}
+
+#post-inputs-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 628px;
+
+  background-color: #F3F2EF;
+
+  border-width: 1px;
+  border-color: #C2C0B9;
+  border-style: solid;
+  border-radius: 10px;
+
+  margin-top: 50px;
+
+  padding:0px
+}
+
+#firstline {
+  display: flex;
+  margin: 15px;
+  margin-bottom: 0px;
+}
+
+.postform {
+  height: 0px;
+  width: 518px;
+  padding-bottom: 6px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  color: #0B1416;
+
+  resize: none;
+  overflow: hidden;
+  background-color: #F3F2EF;
+  
+  border-width: 1px;
+  border-color: #C2C0B9;
+  border-style: solid;
+  border-radius: 0px;
+
+}
+
+#postTitle {
+  padding-top: 6px;
+  border-right: 0px;
+  border-bottom: 0px;
+  min-height: 40px;
+  border-top-left-radius: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#postContent {
+  width: 596px;
+  min-height: 40px;
+  padding-top: 9px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin: 15px;
+  margin-top: 0px;
+  font-size: 14px;
+}
+
+::placeholder {
+  color: #525758;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: normal;
+}
+
+#postTitle::placeholder {
+  color: #525758;
+  opacity:70%;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#postBtn {
+  width: 80px;
+  height: 40px;
+  color: #0B1416;
+  font-weight: bold;
+  background-color: #33F2CF;
+  border-width: 0px;
+  margin: 0px;
+  margin-left: 0px;
+  border-radius: 0px;
+  border-top-right-radius: 20px;
+
 }
 
 .card {
-  margin-bottom: 20px;
+  width: 628px;
+
+  background-color: #F3F2EF;
+
+  border-width: 1px;
+  border-color: #C2C0B9;
+  border-style: solid;
+
+  margin-top: 10px;
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .card-title {
-  margin-bottom: 20px;
+  font-family: Garamond, serif;
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 50px;
 }
 
 .card-text {
-  margin-bottom: 20px;
 }
 
-.list-group-item {
-  margin-top: 10px;
+.delBtn {
+  float: right;
+  width: 25px;
+  height: 25px;
+  color: #0B1416;
+  font-size: 14px;
+
+  margin-left: 561px;
+  border-color: #C2C0B9;
+  border-width: 1px;
+  border-radius: 15px;
 }
 
-.btn {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-#post-inputs {
-  margin-bottom: 20px;
-}
-
-#postTitle, #postContent {
-  margin-bottom: 10px;
+.editBtn {
+  width: 80px;
+  height: 40px;
+  color: #0B1416;
+  font-weight: bold;
+  background-color: #33F2CF;
+  border-width: 0px;
+  margin: 0px;
+  border-radius: 0px;
 }
 
 input[type="text"] {
-  margin-top: 10px;
+  margin-bottom: 8px;
+
 }

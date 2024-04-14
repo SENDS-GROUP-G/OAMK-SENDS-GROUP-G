@@ -16,28 +16,28 @@ export default class Post {
     return element;
   }
 
-  async createPostElement() {
+   async createPostElement() {
     const deletePostButton = new Button(
-      "Delete post",
-      "btn-danger"
+      "",
+      "delBtn"
     ).getElement();
     deletePostButton.addEventListener("click", async () => {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
     });
 
-    const editPostButton = new Button("Edit post", "btn-primary").getElement();
+    const editPostButton = new Button("Edit", "editBtn").getElement();
     editPostButton.addEventListener("click", () => {
-      if (editPostButton.textContent === "Edit post") {
+      if (editPostButton.textContent === "Edit") {
         titleElement.contentEditable = true;
         contentElement.contentEditable = true;
         editPostButton.textContent = "Save Edit";
-        editPostButton.classList.replace("btn-primary", "btn-success");
+        editPostButton.classList.replace("editBtn", "saveBtn");
       } else {
         titleElement.contentEditable = false;
         contentElement.contentEditable = false;
-        editPostButton.textContent = "Edit post";
-        editPostButton.classList.replace("btn-success", "btn-primary");
+        editPostButton.textContent = "Edit";
+        editPostButton.classList.replace("saveBtn", "editBtn");
         API.editPost(
           this.post.post_id,
           titleElement.textContent,
@@ -105,9 +105,9 @@ export default class Post {
 
     this.postElement.append(
       deletePostButton,
-      editPostButton,
       titleElement,
       contentElement,
+      editPostButton,
       commentsElement,
       commentButton,
       commentInput,

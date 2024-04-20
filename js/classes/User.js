@@ -78,7 +78,11 @@ class User {
         throw error;
         }
   }
-
+  logout() {
+    sessionStorage.removeItem('user')
+    this.#id = undefined
+    this.#email = undefined
+  }
 }
 
 export { User }

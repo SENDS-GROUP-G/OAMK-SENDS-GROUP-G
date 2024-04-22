@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Post</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css"/>   
+</head>
+<body>
+  <div class="container my-5">
+    <div id="singlePost"></div>
+  </div>
+
+  <script type="module">
+    import Post from "./js/classes/Post.js";
+    import API from "./js/classes//API.js";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("post_id");
+
+    API.fetchPost(postId).then(post => {
+      const singlePost = new Post(post);
+      const singlePostElement = singlePost.postElement;
+      document.getElementById("singlePost").appendChild(singlePostElement);
+    });
+  </script>
+</body>
+</html>

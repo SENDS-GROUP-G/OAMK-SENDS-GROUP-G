@@ -6,17 +6,18 @@ export default class Comment {
       this.postId = postId;
       this.comment = comment;
       this.commentItem = document.createElement("li");
-      this.commentItem.className = "list-group-item";
+      this.commentItem.className = "comment";
       this.createCommentElement();
     }
   
     createCommentElement() {
-      const commentText = document.createElement("span");
+      const commentText = document.createElement("pre");
       commentText.textContent = this.comment.comment_content;
+      commentText.className = "cmt-text";
   
       const deleteButton = new Button(
-        "Delete",
-        "btn-danger float-end"
+        "",
+        "cmtDelBtn"
       ).getElement();
       deleteButton.addEventListener("click", async () => {
         await API.deleteComment(this.postId, this.comment.comment_id);
@@ -24,18 +25,22 @@ export default class Comment {
       });
   
       const editCommentButton = new Button(
-        "Edit Comment",
-        "btn-primary float-end"
+        "",
+        "cmtEditBtn"
       ).getElement();
       editCommentButton.addEventListener("click", () => {
-        if (editCommentButton.textContent === "Edit Comment") {
+        if (editCommentButton.textContent === "") {
+          deleteButton.style.pointerEvents = "none";
+          deleteButton.classList.replace("cmtDelBtn","disabled");
           commentText.contentEditable = true;
-          editCommentButton.textContent = "Save Edit";
-          editCommentButton.classList.replace("btn-primary", "btn-success");
+          editCommentButton.textContent = "Save";
+          editCommentButton.classList.replace("cmtEditBtn", "cmtSaveBtn");
         } else {
+          deleteButton.style.pointerEvents = "auto";
+          deleteButton.classList.replace("disabled","cmtDelBtn");
           commentText.contentEditable = false;
-          editCommentButton.textContent = "Edit Comment";
-          editCommentButton.classList.replace("btn-success", "btn-primary");
+          editCommentButton.textContent = "";
+          editCommentButton.classList.replace("cmtSaveBtn", "cmtEditBtn");
           API.editComment(
             this.postId,
             this.comment.comment_id,
@@ -44,7 +49,7 @@ export default class Comment {
         }
       });
   
-      this.commentItem.append(commentText, deleteButton, editCommentButton);
+      this.commentItem.append(commentText, editCommentButton, deleteButton);
     }
   
     getCommentItem() {

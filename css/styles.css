@@ -2,11 +2,12 @@
 body {
   width: 100%;
   overflow-x: hidden;
-  background-color: #ECEAE5;
+  background-color: #EDECE8;
   display: flex;
   justify-content: center;
   font-family: 'Helvetica Neue', sans-serif;
   font-size: 16px;
+  padding-bottom: 40px;
 }
 
 #post-inputs-card {
@@ -76,6 +77,7 @@ body {
 
 ::placeholder {
   color: #525758;
+  padding-left: 10px;
   font-size: 14px;
   font-style: italic;
   font-weight: normal;
@@ -116,9 +118,10 @@ body {
 }
 
 .card-title {
-  font-family: Garamond, serif;
+  font-style: italic;
   font-size: 40px;
   font-weight: bold;
+  margin-top: 10px;
   margin-bottom: 50px;
 }
 
@@ -126,30 +129,156 @@ body {
 }
 
 .delBtn {
-  float: right;
   width: 25px;
   height: 25px;
-  color: #0B1416;
-  font-size: 14px;
-
+  background-image: url("../icons/delete.svg");
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
   margin-left: 561px;
   border-color: #C2C0B9;
   border-width: 1px;
   border-radius: 15px;
 }
 
+.delBtn:hover {
+background-image: url("../icons/delete-hover.svg");
+background-color: #C2C0B9;
+}
+
 .editBtn {
-  width: 80px;
-  height: 40px;
-  color: #0B1416;
-  font-weight: bold;
-  background-color: #33F2CF;
-  border-width: 0px;
+  width: 40px;
+  height: 22px;
+  color: #C2C0B9;
+  font-size: 12px;
+  background-color: transparent;
+  
+  border-color: #C2C0B9;
+  border-width: 1.5px;
+  border-radius: 10px;
+
+  padding: 0px;
   margin: 0px;
-  border-radius: 0px;
+  margin-left: 274px;
+  margin-bottom: 70px;
+}
+
+.editBtn:hover {
+  
+  color: #F3F2EF;
+  background-color: #C2C0B9;
+}
+
+.saveBtn {
+  width: 40px;
+  height: 22px;
+  color: #F3F2EF;
+  font-size: 12px;
+  background-color: transparent;
+  
+  border-color: #C2C0B9;
+  border-width: 1.5px;
+  border-radius: 10px;
+
+  padding: 0px;
+  margin: 0px;
+  margin-left: 274px;
+  margin-bottom: 70px;
+}
+
+.saveBtn:hover {
+  color: #C2C0B9;
+  background-color: #F3F2EF;
+  border-color: #C2C0B9;
 }
 
 input[type="text"] {
   margin-bottom: 8px;
+}
 
+pre {
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  font: inherit;
+}
+
+.comment {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.cmt-text {
+  display: flex;
+  align-items: center;
+
+  width: fit-content;
+  max-width: 500px;
+  min-height: 38px;
+  font-size: 14px;
+  color: #0B1416;
+  background-color: #E8E7E4;
+
+  margin-bottom: 0px;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  border-width: 0px;
+  border-radius: 17px;
+}
+
+.cmtEditBtn {
+  margin-left: 7px;
+  display: none;
+  padding: 0px;
+  font: 13px;
+  color: #C2C0B9;
+  background-image: url("../icons/edit.svg");
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  border-color: transparent;
+  border-width: 0px;
+}
+
+.cmtDelBtn { 
+  display: none;
+  margin-left: 3px;
+  padding: 0px;
+  background-image: url("../icons/delete.svg");
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  border-color: transparent;
+  border-width: 0px;
+}
+
+.cmtSaveBtn {
+  font-size: 13px;
+
+}
+
+.cmtDelBtn:hover ,.cmtEditBtn:hover {
+  background-color: #E8E7E4;
+}
+
+.disabled {
+  display: none;
+}
+
+.comment:hover .cmtDelBtn,.comment:hover .cmtEditBtn{
+  display: block;
 }

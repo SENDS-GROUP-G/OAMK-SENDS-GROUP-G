@@ -1,62 +1,48 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Add event listener to the submit button
-  document.querySelector(".buttons a[href='#submit']").addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent default link behavior
+import API from './API.js'
 
-      // Get form data
-      var title = document.getElementById("title").value;
-      var content = document.getElementById("content").value;
+class FeedbackForm {
+  constructor() {
+    this.titleInput = document.getElementById("title");
+    this.contentInput = document.getElementById("content");
+    this.submitButton = document.querySelector(".buttons a[href='#submit']");
+    this.cancelButton = document.querySelector(".buttons a[href='#cancel']");
+    this.addEventListeners();
+  }
 
-      // Validate form data (you can add your validation logic here)
+  addEventListeners() {
+    this.submitButton.addEventListener("click", (event) => this.handleSubmit(event));
+    this.cancelButton.addEventListener("click", (event) => this.handleCancel(event));
+  }
 
-      // Construct feedback object
-      var feedback = {
-          title: title,
-          content: content
-      };
+  handleSubmit(event) {
+    event.preventDefault();
 
-      // You can send the feedback data to your server using fetch or XMLHttpRequest
-    
-      fetch("/feedbacks", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify(feedback)
-      })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error("Network response was not ok");
-          }
-          return response.json();
-      })
+    const title = this.titleInput.value;
+    const content = this.contentInput.value;
+
+    API.sendFeedback(title, content)
       .then(data => {
-          alert("Feedback submitted successfully!");
-          // Clear form fields
-          document.getElementById("title").value = "";
-          document.getElementById("content").value = "";
+        alert("Feedback submitted successfully!");
+        this.clearFields();
       })
       .catch(error => {
-          console.error("Error:", error);
-          alert("Error submitting feedback. Please try again later.");
+        console.error("Error:", error);
+        alert("Error submitting feedback. Please try again later.");
       });
+  }
 
-      // For demonstration purposes, let's just log the feedback object to console
-      console.log("Feedback:", feedback);
-      alert("Feedback submitted successfully!");
-      // Clear form fields
-      document.getElementById("title").value = "";
-      document.getElementById("content").value = "";
-  });
+  handleCancel(event) {
+    event.preventDefault();
+    this.clearFields();
+    alert("You just cancelled your submission.");
+  }
 
-  // Add event listener to the cancel button
-  document.querySelector(".buttons a[href='#cancel']").addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent default link behavior
+  clearFields() {
+    this.titleInput.value = "";
+    this.contentInput.value = "";
+  }
+}
 
-      // Clear form fields
-      document.getElementById("title").value = "";
-      document.getElementById("content").value = "";
-
-      alert("You just cancelled your submission.");
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  new FeedbackForm();
 });

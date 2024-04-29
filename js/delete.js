@@ -1,3 +1,5 @@
+import API from './classes/API.js';
+
 document.getElementById('delete').addEventListener('click', async () => {
     const userId = localStorage.getItem('user_id');
     const password = document.getElementById('password').value;

@@ -111,4 +111,18 @@ export default class API {
       user_id: localStorage.getItem("user_id"),
     });
   }
+  static searchUser(username) {
+    return this.sendRequest(`${this.backendUrl}/search/users/${username}`);
+  }
+  
+  static searchPost(title) {
+    return this.sendRequest(`${this.backendUrl}/search/posts/${title}`);
+  }
+  static changePassword(userId, password, newPass) {
+    return this.sendRequest(`${this.backendUrl}/users/password`, "PUT", {
+        user_id: userId,
+        password,
+        new_pass: newPass
+    });
+}
 }

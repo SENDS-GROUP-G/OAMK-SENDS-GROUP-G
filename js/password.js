@@ -1,29 +1,18 @@
-const BACKEND_ROOT_URL = 'http://localhost:3001';
-const email = document.getElementById('emailInput');
+import API from './classes/API.js';
+
+const userId = localStorage.getItem('user_id');
 const currentPassword = document.getElementById('currentPasswordInput');
 const newPassword = document.getElementById('newPasswordInput');
 const confirmButton = document.getElementById('confirmButton');
 
 const changePassword = async () => {
     try {
-        const response = await fetch(BACKEND_ROOT_URL + '/users/password', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email.value,
-                password: currentPassword.value,
-                new_pass: newPassword.value
-            })
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            alert(data.message);
+        const response = await API.changePassword(userId, currentPassword.value, newPassword.value);
+        console.log(response);
+        if (response.message) {
+            alert(response.message);
         } else {
-            const errorData = await response.json();
-            alert(errorData.error);
+            alert(response.error);
         }
     } catch (error) {
         console.error(error);

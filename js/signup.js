@@ -1,19 +1,32 @@
-import { User } from "./class/User.js";
+document
+  .getElementById("registerForm")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
 
-const user = new User()
-const user_name_input = document.querySelector('#user-name')
-const email_input = document.querySelector('#user-email')
-const password_input = document.querySelector('#password')
+    const username = document.getElementById("user_name").value;
+    const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
 
-document.querySelector('#signup-button').addEventListener('click',(event) => {
-  event.preventDefault()
-  const user_name = user_name_input.value
-  const email = email_input.value
-  const password = password_input.value
-
-  user.register(user_name, email, password).then(user => {
-    window.location.href="login.html"
-  }).catch(error => {
-    alert(error)
-  })
-})
+    fetch("http://localhost:3001/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_name: username,
+        password: password,
+        email: email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.user_id) {
+          alert("User created successfully");
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });

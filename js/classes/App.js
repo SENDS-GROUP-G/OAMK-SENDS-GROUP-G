@@ -19,7 +19,9 @@ export default class App {
         });
         document.getElementById("postTitle").value = "";
         document.getElementById("postContent").value = "";
-      } else alert("Please enter both title and content for the post.");
+        const postContentBox = document.getElementById("postContent");
+        postContentBox.style.height = `0px`;
+      } else alert("Please enter both title and content of the post.");
     });
     const posts = await API.fetchPosts();
     const postsContainer = document.getElementById("posts");
@@ -33,5 +35,24 @@ export default class App {
         commentsElement.appendChild(commentItem);
       });
     });
+
+    const postContent = document.getElementById("postContent");
+
+    postContent.addEventListener("input", function() {
+      const currentContent = postContent.value;
+      let previousContent = "";
+      if (postContent.value && currentContent !== previousContent) {
+        previousContent = currentContent;
+        postContent.style.height = `${postContent.scrollHeight}px`;
+        window.requestAnimationFrame(() => {
+          postContent.style.height = null; // Trigger reflow
+          postContent.style.height = `${postContent.scrollHeight}px`;
+      });
+    } else {
+        // If there's no input, reset to default height
+        postContent.style.height = `0px`;
+      }
+    });
+    
   }
 }

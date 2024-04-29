@@ -1,19 +1,16 @@
-import { User } from './classes/User.js'
-
-const deleteButton = document.querySelector('#delete');
-const cancel = document.querySelector('#cancel');
-
-deleteButton.addEventListener('click', async () => {
+document.getElementById('delete').addEventListener('click', async () => {
+    const userId = localStorage.getItem('user_id');
+    const password = document.getElementById('password').value;
     try {
-        const user = new User();
-        await user.deleteAccount();
-        alert('Account deleted successfully')
-        window.location.href = 'signup.html';
+        const response = await API.deleteUser(userId, password);
+        console.log(response);
+        if (response.message) {
+            alert(response.message);
+            window.logout(); 
+        } else {
+            alert(response.error);
+        }
     } catch (error) {
         console.error(error);
     }
-});
-
-cancel.addEventListener('click', () => {
-    window.location.href = 'index.html';
 });

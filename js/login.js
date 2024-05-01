@@ -3,8 +3,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 
   const password = document.getElementById("password").value;
   const email = document.getElementById("email").value;
-
-  fetch("http://localhost:3001/users/login", {
+  fetch('https://sendsserver.onrender.com/users/login', {
+  //fetch("http://localhost:3001/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

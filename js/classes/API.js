@@ -104,13 +104,14 @@ export default class API {
       }
     );
   }
-  static sendFeedback(title, content) {
-    return this.sendRequest(`${this.backendUrl}/feedbacks`, "POST", {
-      title,
-      content,
-      user_id: localStorage.getItem("user_id"),
-    });
-  }
+static sendFeedback(rate, title, content) {
+  return this.sendRequest(`${this.backendUrl}/feedbacks`, "POST", {
+    rate,
+    title,
+    content,
+    user_id: localStorage.getItem("user_id"),
+  });
+}
   static searchUser(username) {
     return this.sendRequest(`${this.backendUrl}/search/users/${username}`);
   }

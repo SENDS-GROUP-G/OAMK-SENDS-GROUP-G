@@ -1,12 +1,11 @@
-import Button from './Button.js';
-import API from './API.js';
-import Comment from './Comment.js';
+import Button from "./Button.js";
+import API from "./API.js";
+import Comment from "./Comment.js";
 
 export default class Post {
   constructor(post) {
     this.post = post;
     this.postElement = this.createElement("div", "card");
-    this.saveEdit = null;
     this.createPostElement();
   }
 
@@ -51,10 +50,12 @@ export default class Post {
 
    async createPostElement() {
     const deletePostButton = new Button("", "delBtn").getElement();
+
     deletePostButton.addEventListener("click", async () => {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
     });
+
 
     const editPostButton = new Button("Edit", "editBtn").getElement();
     editPostButton.addEventListener("click", async () => {
@@ -72,11 +73,13 @@ export default class Post {
         titleLink.classList.remove("disabled-link");
         deletePostButton.style.display = "block";
         editPostButton.classList.replace("saveBtn", "editBtn");
+
         const updatedPost = await API.editPost(
           this.post.post_id,
           titleElement.textContent,
           contentElement.textContent
         );
+
         userNameElement.textContent = `${this.post.user_name}`;
       }
     });
@@ -104,6 +107,7 @@ export default class Post {
     timeAgoElement.textContent = `• ${this.timeAgo(this.post.saved)}`;
 
     const commentsElement = this.createElement("div", "cmt-list");
+
     const comments = await API.fetchComments(this.post.post_id);
     comments.forEach((comment) => {
       const commentItem = new Comment(
@@ -113,6 +117,7 @@ export default class Post {
       commentsElement.appendChild(commentItem);
     });
 
+
     const reactButton = new Button("", "reactBtn card-button").getElement();
     const reactIcon = this.createElement("img", "icons");
     const reactedIcon = this.createElement("img", "icons none");
@@ -121,6 +126,7 @@ export default class Post {
     const reactNumber = this.createElement("p","react-number");
     reactButton.append(reactIcon,reactedIcon,reactNumber);
     
+
     let hasReacted = false;
     let reactionCount = 0;
 
@@ -213,17 +219,10 @@ export default class Post {
           commentButton.classList.remove("true");
           commentInput.style.display = "none";
           postCommentButton.style.display = "none";
+
           commentInput.style.height = `0px`;
         } else {
           alert("Failed to post comment.");
-        }
-      } else {
-        alert("Please enter a comment.");
-      }
-    });
-
-    titleElement.textContent = this.post.title;
-    contentElement.textContent = this.post.post_content;
 
     const buttons = this.createElement("div","buttons");
     buttons.append(
@@ -246,6 +245,7 @@ export default class Post {
       editPostButton,
       buttons,
       commentsElement,
+
       commentInput,
       postCommentButton
     );

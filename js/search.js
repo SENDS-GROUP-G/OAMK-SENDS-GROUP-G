@@ -67,4 +67,5 @@ function displayResults(userResults, postResults) {
     resultsElement.appendChild(resultsContainer);
   });
   
+
 }

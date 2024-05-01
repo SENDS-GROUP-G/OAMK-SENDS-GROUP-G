@@ -1,5 +1,6 @@
 export default class API {
-  static backendUrl = "http://localhost:3001";
+  //static backendUrl = "http://localhost:3001";
+  static backendUrl = "https://sendsserver.onrender.com";
   static async sendRequest(url, method = "GET", body = null) {
     const options = { method, headers: { "Content-Type": "application/json" } };
     if (body) {
@@ -90,10 +91,7 @@ export default class API {
     );
   }
   static fetchUser(user_id) {
-    return this.sendRequest(`${this.backendUrl}/users/${user_id}`);
-  }
-  static fetchUserAndPosts(userId) {
-    return this.sendRequest(`${this.backendUrl}/user/${userId}`);
+    return this.sendRequest(`${this.backendUrl}/user/${user_id}`);
   }
   static deleteUser(userId, password) {
     return this.sendRequest(
@@ -104,13 +102,14 @@ export default class API {
       }
     );
   }
-  static sendFeedback(title, content) {
-    return this.sendRequest(`${this.backendUrl}/feedbacks`, "POST", {
-      title,
-      content,
-      user_id: localStorage.getItem("user_id"),
-    });
-  }
+static sendFeedback(rate, title, content) {
+  return this.sendRequest(`${this.backendUrl}/feedbacks`, "POST", {
+    rate,
+    title,
+    content,
+    user_id: localStorage.getItem("user_id"),
+  });
+}
   static searchUser(username) {
     return this.sendRequest(`${this.backendUrl}/search/users/${username}`);
   }

@@ -53,6 +53,7 @@ export default class Comment {
       });
   
       this.commentItem.append(nameText, commentText, editCommentButton, deleteButton);
+
     }
   
     getCommentItem() {

@@ -16,82 +16,98 @@ export default class Post {
   }
 
   timeAgo(saved) {
-    const diffInMilliseconds = new Date() - new Date(saved);
-    const units = [
-      { name: 'year', value: 60 * 60 * 24 * 365 },
-      { name: 'month', value: 60 * 60 * 24 * 30 },
-      { name: 'week', value: 60 * 60 * 24 * 7 },
-      { name: 'day', value: 60 * 60 * 24 },
-      { name: 'hour', value: 60 * 60 },
-      { name: 'minute', value: 60 },
-    ];
-    for (const unit of units) {
-      const diff = Math.floor(diffInMilliseconds / 1000 / unit.value);
-      if (diff > 0) return `${diff} ${unit.name}(s) ago`;
-    }
+    const savedDate = new Date(saved);
+    const now = new Date();
+    const diffInMilliseconds = now - savedDate;
+    const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    const diffInMonths = Math.floor(diffInDays / 30);
+    const diffInYears = Math.floor(diffInDays / 365);
+
+    if (diffInYears === 1) return `a year ago`;
+    else if (diffInYears > 0) return  `${diffInYears} years ago`;
+
+    if (diffInMonths === 1) return `a month ago`;
+    else if (diffInMonths > 0) return  `${diffInMonths} months ago`;
+
+    if (diffInWeeks === 1) return `a week ago`;
+    else if (diffInWeeks > 0) return  `${diffInWeeks} weeks ago`;
+
+    if (diffInDays === 1) return `a day ago`;
+    else if (diffInDays > 0) return  `${diffInDays} days ago`;
+    
+    if (diffInHours === 1) return `an hour ago`;
+    else if (diffInHours > 0) return  `${diffInHours} hours ago`;
+
+    if (diffInMinutes === 1) return `a minute ago`;
+    else if (diffInMinutes > 0) return  `${diffInMinutes} minutes ago`;
+
     return `a moment ago`;
   }
 
-  async createPostElement() {
-    const loggedInUserId = localStorage.getItem("user_id");
-    const deletePostButton = new Button("Delete post", "btn-danger").getElement();
+   async createPostElement() {
+    const deletePostButton = new Button("", "delBtn").getElement();
+
     deletePostButton.addEventListener("click", async () => {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
     });
 
-    const titleElement = this.createElement("h2", "card-title");
-    const titleLink = this.createElement("a", "");
-    titleLink.href = `/post.html?post_id=${this.post.post_id}`;
-    titleLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.href = `/post.html?post_id=${this.post.post_id}`;
-    });
-    titleLink.appendChild(titleElement);
 
-    const contentElement = this.createElement("p", "card-text");
-
-    const userNameElement = this.createElement("a", "post-user-name");
-    userNameElement.href = `/user.html?user_id=${this.post.user_id}`;
-    userNameElement.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.href = `/user.html?user_id=${this.post.user_id}`;
-    });
-
-    const editPostButton = new Button("Edit post", "btn-primary").getElement();
-    if (Number(this.post.user_id === Number(loggedInUserId))) {
-      deletePostButton.style.display = "block";
-      editPostButton.style.display = "block";
-    } else {
-      deletePostButton.style.display = "none";
-      editPostButton.style.display = "none";
-    }
-    userNameElement.textContent = `Posted by ${this.post.user_name}`;
-
-    const timeAgoElement = this.createElement("span", "post-time-ago");
-    timeAgoElement.textContent = `Posted ${this.timeAgo(this.post.saved)}`;
-
+    const editPostButton = new Button("Edit", "editBtn").getElement();
     editPostButton.addEventListener("click", async () => {
-      if (editPostButton.textContent === "Edit post") {
+      if (editPostButton.textContent === "Edit") {
         titleElement.contentEditable = true;
         contentElement.contentEditable = true;
-        editPostButton.textContent = "Save Edit";
-        editPostButton.classList.replace("btn-primary", "btn-success");
+        titleLink.classList.add("disabled-link");
+        deletePostButton.style.display = "none";
+        editPostButton.textContent = "Save";
+        editPostButton.classList.replace("editBtn", "saveBtn");
       } else {
         titleElement.contentEditable = false;
         contentElement.contentEditable = false;
-        editPostButton.textContent = "Edit post";
-        editPostButton.classList.replace("btn-success", "btn-primary");
+        editPostButton.textContent = "Edit";
+        titleLink.classList.remove("disabled-link");
+        deletePostButton.style.display = "block";
+        editPostButton.classList.replace("saveBtn", "editBtn");
+
         const updatedPost = await API.editPost(
           this.post.post_id,
           titleElement.textContent,
           contentElement.textContent
         );
-        userNameElement.textContent = `Posted by ${this.post.user_name}`;
+
+        userNameElement.textContent = `${this.post.user_name}`;
       }
     });
 
-    const commentsElement = this.createElement("div", "list-group");
+    const titleElement = this.createElement("h2", "card-title");
+    const titleLink = this.createElement("a", "");
+    titleLink.href = `/post.html?post_id=${this.post.post_id}`;
+    
+    titleLink.addEventListener("click", (e) => {
+      if (titleLink.classList.contains("disabled-link")) {
+        e.preventDefault();
+      } else {
+        window.location.href = `/post.html?post_id=${this.post.post_id}`;
+      }
+    });
+    
+    titleLink.appendChild(titleElement);
+    const contentElement = this.createElement("pre", "card-text");
+    const userNameElement = this.createElement("span", "post-user-name");
+    const user = await API.fetchUser(this.post.user_id);
+    this.post.user_name = user.user_name;
+    userNameElement.textContent = `${this.post.user_name}`;
+
+    const timeAgoElement = this.createElement("span", "post-time-ago");
+    timeAgoElement.textContent = `• ${this.timeAgo(this.post.saved)}`;
+
+    const commentsElement = this.createElement("div", "cmt-list");
+
     const comments = await API.fetchComments(this.post.post_id);
     comments.forEach((comment) => {
       const commentItem = new Comment(
@@ -101,15 +117,30 @@ export default class Post {
       commentsElement.appendChild(commentItem);
     });
 
-    const reactButton = this.createElement("button", "btn btn-secondary");
+
+    const reactButton = new Button("", "reactBtn card-button").getElement();
+    const reactIcon = this.createElement("img", "icons");
+    const reactedIcon = this.createElement("img", "icons none");
+    reactIcon.src = "icons/react.svg";
+    reactedIcon.src = "icons/reacted.svg";
+    const reactNumber = this.createElement("p","react-number");
+    reactButton.append(reactIcon,reactedIcon,reactNumber);
+    
+
     let hasReacted = false;
     let reactionCount = 0;
 
     const updateReactButton = () => {
-      reactButton.textContent = `React (${reactionCount})`;
+      reactNumber.textContent = `${reactionCount}`;
       reactButton.className = hasReacted
-        ? "btn btn-success"
-        : "btn btn-secondary";
+        ? "reactBtn card-button true"
+        : "reactBtn card-button";
+      reactedIcon.className = hasReacted
+      ? "icons"
+      : "icons none";
+      reactIcon.className = hasReacted
+      ? "icons none"
+      : "icons";
     };
 
     reactButton.addEventListener("click", async () => {
@@ -117,7 +148,7 @@ export default class Post {
         await API.removeReactcion(this.post.post_id);
         reactionCount--;
       } else {
-        await API.addReaction(this.post.post_id, 1);
+        await API.addReaction(this.post.post_id, 1); 
         reactionCount++;
       }
       hasReacted = !hasReacted;
@@ -129,21 +160,46 @@ export default class Post {
     reactionCount = reactions.reactions;
     updateReactButton();
 
-    const commentButton = new Button("Comment", "btn-secondary").getElement();
-    const commentInput = this.createElement("input", "form-control mb-2");
-    commentInput.type = "text";
-    commentInput.placeholder = "Add a comment";
+    const commentButton = new Button("", "cmtBtn card-button").getElement();
+    const commentIcon = this.createElement("img", "icons");
+    commentIcon.src = "icons/comment.svg";
+    commentButton.append(commentIcon);
+    const commentInput = document.createElement("textarea");
+    commentInput.addEventListener("input", function() {
+      const currentContent = commentInput.value;
+      let previousContent = "";
+      if (commentInput.value && currentContent !== previousContent) {
+        previousContent = currentContent;
+        commentInput.style.height = `${commentInput.scrollHeight}px`;
+        window.requestAnimationFrame(() => {
+          commentInput.style.height = null; // Trigger reflow
+          commentInput.style.height = `${commentInput.scrollHeight}px`;
+      });
+    } else {
+        // If there's no input, reset to default height
+        commentInput.style.height = `0px`;
+      }
+    });
+    commentInput.classList.add("cmt-input");
+    commentInput.placeholder = `Comment as ${this.post.user_name}`;
     commentInput.style.display = "none";
 
     const postCommentButton = new Button(
-      "Post comment",
-      "btn-primary"
+      "",
+      "postCmtBtn"
     ).getElement();
     postCommentButton.style.display = "none";
 
     commentButton.addEventListener("click", () => {
-      commentInput.style.display = "block";
-      postCommentButton.style.display = "block";
+      if (commentInput.style.display === "none") {
+        commentButton.classList.add("true");
+        commentInput.style.display = "block";
+        postCommentButton.style.display = "block";
+      } else {
+        commentButton.classList.remove("true");
+        commentInput.style.display = "none";
+        postCommentButton.style.display = "none";
+      }
     });
 
     postCommentButton.addEventListener("click", async () => {
@@ -160,25 +216,36 @@ export default class Post {
           ).getCommentItem();
           commentsElement.appendChild(commentItem);
           commentInput.value = "";
+          commentButton.classList.remove("true");
           commentInput.style.display = "none";
           postCommentButton.style.display = "none";
-        }
-      }
-    });
 
-    titleElement.textContent = this.post.title;
-    contentElement.textContent = this.post.post_content;
+          commentInput.style.height = `0px`;
+        } else {
+          alert("Failed to post comment.");
+
+    const buttons = this.createElement("div","buttons");
+    buttons.append(
+      reactButton,
+      commentButton
+    );
+
+    const userNameContainer = this.createElement("div","user");
+    userNameContainer.append(
+      userNameElement,
+      timeAgoElement
+    );
+    
 
     this.postElement.append(
       deletePostButton,
-      editPostButton,
       titleLink,
+      userNameContainer,
       contentElement,
-      userNameElement,
-      timeAgoElement,
+      editPostButton,
+      buttons,
       commentsElement,
-      reactButton,
-      commentButton,
+
       commentInput,
       postCommentButton
     );

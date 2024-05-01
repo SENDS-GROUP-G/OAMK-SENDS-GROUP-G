@@ -7,14 +7,18 @@ class FeedbackForm {
     this.rateButtons = Array.from(document.querySelectorAll("#rate button"));
     this.submitButton = document.querySelector(".buttons button[type='submit']");
     this.cancelButton = document.querySelector(".buttons button[type='button']");
+
     this.addEventListeners();
   }
 
   addEventListeners() {
+
     this.rateButtons.forEach(button => button.addEventListener("click", (event) => this.handleRate(event)));
+
     this.submitButton.addEventListener("click", (event) => this.handleSubmit(event));
     this.cancelButton.addEventListener("click", (event) => this.handleCancel(event));
   }
+
 
   handleRate(event) {
     this.rateButtons.forEach(button => button.classList.remove("btn-primary"));

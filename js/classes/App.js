@@ -36,6 +36,16 @@ export default class App {
       });
     });
 
+
+    const postTitle = document.getElementById("postTitle");
+
+    postTitle.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        // Optionally, perform an alternative action on Enter press (e.g., submit form)
+      }
+    });
+
     const postContent = document.getElementById("postContent");
 
     postContent.addEventListener("input", function() {

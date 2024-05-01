@@ -1,3 +1,4 @@
+
 document
   .getElementById("registerForm")
   .addEventListener("submit", function (e) {
@@ -30,3 +31,4 @@ document
         console.error("Error:", error);
       });
   });
+

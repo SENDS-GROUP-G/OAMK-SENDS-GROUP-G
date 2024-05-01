@@ -90,10 +90,7 @@ export default class API {
     );
   }
   static fetchUser(user_id) {
-    return this.sendRequest(`${this.backendUrl}/users/${user_id}`);
-  }
-  static fetchUserAndPosts(userId) {
-    return this.sendRequest(`${this.backendUrl}/user/${userId}`);
+    return this.sendRequest(`${this.backendUrl}/user/${user_id}`);
   }
   static deleteUser(userId, password) {
     return this.sendRequest(

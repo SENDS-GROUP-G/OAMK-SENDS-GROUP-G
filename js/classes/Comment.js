@@ -48,7 +48,7 @@ export default class Comment {
           );
         }
       });
-  
+ 
       this.commentItem.append(commentText, editCommentButton, deleteButton);
     }
   

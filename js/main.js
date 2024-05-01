@@ -5,10 +5,10 @@ window.onload = function() {
     if (userId) {
       document.getElementById('signup').style.display = 'none';
       document.getElementById('login').style.display = 'none';
-      document.getElementById('logout').style.display = 'block';
+      document.getElementById('logout').style.display = 'flex';
     } else {
-      document.getElementById('signup').style.display = 'block';
-      document.getElementById('login').style.display = 'block';
+      document.getElementById('signup').style.display = 'flex';
+      document.getElementById('login').style.display = 'flex';
       document.getElementById('logout').style.display = 'none';
     }
   };
@@ -16,7 +16,7 @@ window.onload = function() {
   window.logout = function() {
     localStorage.removeItem('user_id');
     localStorage.removeItem('username');
-    window.location.href = 'landingpage.html';
+    window.location.href = 'index.html';
 }
 
 App.init();

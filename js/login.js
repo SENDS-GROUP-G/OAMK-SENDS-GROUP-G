@@ -13,7 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   })
   .then(response => {
       if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Email or password is not correct.');
       }
       return response.json();
   })
@@ -21,7 +21,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
       if (data.user_id) {
           localStorage.setItem('user_id', data.user_id);
           localStorage.setItem('username', data.user_name);
-          window.location.href = 'index.html';
+          window.location.href = 'main.html';
       } else {
           throw new Error(data.error);
       }

@@ -66,8 +66,6 @@ export default class Post {
       deletePostButton.style.display = "none";
       editPostButton.style.display = "none";
     }
-    const user = await API.fetchUser(this.post.user_id);
-    this.post.user_name = user.user_name;
     userNameElement.textContent = `Posted by ${this.post.user_name}`;
 
     const timeAgoElement = this.createElement("span", "post-time-ago");

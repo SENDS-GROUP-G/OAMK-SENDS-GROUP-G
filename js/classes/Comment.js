@@ -11,6 +11,9 @@ export default class Comment {
     }
   
     createCommentElement() {
+      const nameText = document.createElement("p")
+      nameText.textContent = this.comment.user_name;
+      nameText.className = "cmt-user-name";
       const commentText = document.createElement("pre");
       commentText.textContent = this.comment.comment_content;
       commentText.className = "cmt-text";
@@ -49,7 +52,7 @@ export default class Comment {
         }
       });
   
-      this.commentItem.append(commentText, editCommentButton, deleteButton);
+      this.commentItem.append(nameText, commentText, editCommentButton, deleteButton);
     }
   
     getCommentItem() {

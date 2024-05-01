@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="./css/style.css" rel="stylesheet">
+    <title>Settings</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="search.html">Search</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="feedback" href="feedback.html">Feedback</a>
+                </li>
+                <li class="nav-item" id="settings">
+                  <a class="nav-link" href="settings.html">Login</a>
+                </li>
+                <li class="nav-item" id="signup">
+                  <a class="nav-link" href="signup.html">Sign up</a>
+                </li>
+                <li class="nav-item" id="login">
+                  <a class="nav-link" href="login.html">Login</a>
+                </li>
+                <li class="nav-item" id="logout" style="display: none;">
+                  <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+    </header>
+    <div class="container-fluid">
+        <button class="btn btn-secondary" id="deleteButton">Delete Account</button>
+        <button class="btn btn-secondary" id="changePassButton">Change Password</button>
+        <div id="deleteAccount" class="hidden">
+            <h1>Delete Account</h1>
+            <p>
+                Are you sure you want to delete your account? This action cannot be undone.
+            </p>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" placeholder="Enter your password" />
+            </div>
+            <button id="delete" class="btn btn-danger">Delete Account</button>
+            <button id="cancel" class="btn btn-secondary">Cancel</button>
+        </div>
+        <div id="changePassword" class="hidden">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="currentPasswordLabel">Current Password:</span>
+                </div>
+                <input type="password" class="form-control" id="currentPasswordInput" placeholder="Enter Your Current Password..." aria-label="Current Password" aria-describedby="currentPasswordLabel">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="newPasswordLabel">New Password:</span>
+                </div>
+                <input type="password" class="form-control" id="newPasswordInput" placeholder="Enter Your New Password..." aria-label="New Password" aria-describedby="newPasswordLabel">
+            </div>
+            <div class="input-group-append">
+                <button id="confirmButton" class="btn btn-outline-secondary">Confirm</button>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="./js/settings.js"></script> 
+    <script type="module" src="./js/password.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+</html>

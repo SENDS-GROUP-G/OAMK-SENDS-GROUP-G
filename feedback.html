@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Single Post</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="styles.css"/>   
+  <title>Feedback Form</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <header>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -40,24 +40,28 @@
     </div>
   </nav>
 </header>
+
 <body>
-  <div class="container my-5">
-    <div id="singlePost"></div>
+  <div class="container">
+    <form>
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="content">Content:</label>
+        <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+      </div>
+      <div class="buttons">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary">Cancel</button>
+      </div>
+    </form>
   </div>
-
-  <script type="module">
-    import Post from "./js/classes/Post.js";
-    import API from "./js/classes//API.js";
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get("post_id");
-
-    API.fetchPost(postId).then(post => {
-      const singlePost = new Post(post);
-      const singlePostElement = singlePost.postElement;
-      document.getElementById("singlePost").appendChild(singlePostElement);
-    });
-  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="./js/classes/API.js" type="module"></script>
+  <script src="./js/classes/Feedback.js" type="module"></script>
   <script src="js/navbar.js"></script>
 </body>
+
 </html>

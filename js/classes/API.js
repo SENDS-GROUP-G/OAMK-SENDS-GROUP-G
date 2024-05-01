@@ -92,4 +92,37 @@ export default class API {
   static fetchUser(user_id) {
     return this.sendRequest(`${this.backendUrl}/users/${user_id}`);
   }
+  static fetchUserAndPosts(userId) {
+    return this.sendRequest(`${this.backendUrl}/user/${userId}`);
+  }
+  static deleteUser(userId, password) {
+    return this.sendRequest(
+      `${this.backendUrl}/delete/users/${userId}`,
+      "DELETE",
+      {
+        password,
+      }
+    );
+  }
+  static sendFeedback(title, content) {
+    return this.sendRequest(`${this.backendUrl}/feedbacks`, "POST", {
+      title,
+      content,
+      user_id: localStorage.getItem("user_id"),
+    });
+  }
+  static searchUser(username) {
+    return this.sendRequest(`${this.backendUrl}/search/users/${username}`);
+  }
+  
+  static searchPost(title) {
+    return this.sendRequest(`${this.backendUrl}/search/posts/${title}`);
+  }
+  static changePassword(userId, password, newPass) {
+    return this.sendRequest(`${this.backendUrl}/users/password`, "PUT", {
+        user_id: userId,
+        password,
+        new_pass: newPass
+    });
+}
 }

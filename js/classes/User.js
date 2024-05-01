@@ -60,7 +60,29 @@ class User {
       throw response.statusText;
     }
   }
-
+  async deleteAccount() {
+    try {
+        const response = await fetch(BACKEND_URL + '/delete/' + this.#id, {
+            method: 'delete',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (response.ok === true) {
+            sessionStorage.removeItem('user');
+            this.#id = undefined;
+            this.#email = undefined;
+            return true;
+        } else {
+            throw response.statusText;
+        }
+        } catch (error) {
+        throw error;
+        }
+  }
+  logout() {
+    sessionStorage.removeItem('user')
+    this.#id = undefined
+    this.#email = undefined
+  }
 }
 
 export { User }

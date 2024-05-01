@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>SENDS</title>
+    <title>Search</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -16,42 +16,16 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-
     <link rel="stylesheet" href="css/styles.css" />
   </head>
 
   <body>
-    <div id="background1"></div>
+    <div id="background2"></div>
     <header>
-      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Logo</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Search</a>
-            </li>
-            <li class="nav-item" id="signup">
-              <a class="nav-link" href="signup.html">Sign up</a>
-            </li>
-            <li class="nav-item" id="login">
-              <a class="nav-link" href="login.html">Login</a>
-            </li>
-            <li class="nav-item" id="logout" style="display: none;">
-              <a class="nav-link" href="#" onclick="logout()">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </nav> -->
-      <div class="nav-bar">
+      <div style="border-bottom-width: 3px;border-color: #0B1416;" class="nav-bar">
         <a href="main.html"><img id="logo" src="icons/sen-logo.svg" alt=""></a>
         <div class="box">
-          <a id="search" href="search.html"><div id="search-icon-container"><img id="search-icon" src="icons/search.svg" alt=""></div><p id="search-text">Search</p></a>
+          <!-- <a id="search" href="search.html"><div id="search-icon-container"><img id="search-icon" src="icons/search.svg" alt=""></div><p id="search-text">Search</p></a> -->
           <button id="toggle-button"></button>
           <div id="toggle-menu">
             <div class="nav-links">
@@ -78,35 +52,27 @@
       </div>
     </header>
     <main>
-      
       <div id="main-container">
-        <div id="post-inputs-card">
-          <div id="firstline">
-            <textarea
-              id="postTitle"
-              placeholder="Make a fabulous title..."
-              class="postform"
-              tabindex="1"
-              maxlength="50"
-            ></textarea>
-            <button id="postBtn" class="btn btn-primary" tabindex="3">Post</button>
+        <h1 class="text-center">Search</h1>
+        <div class="input-group">
+          <textarea id="search-input" class="" placeholder="Search..."></textarea>
+          <div class="input-group-append">
+            <button class="" type="button" id="search-button"></button>
           </div>
-          <textarea
-            id="postContent"
-            placeholder="What is on your mind today?"
-            class="postform"
-            tabindex="2"
-          ></textarea>
         </div>
-  
-        <div id="posts">
-        </div>
+        <div id="search-results"></div>
       </div>
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"
+      ></script>
+      <script type="module" src="js/search.js"></script>
     </main>
     <footer>
       <!-- place footer here -->
     </footer>
-    <!-- Bootstrap JavaScript Libraries -->
+    <!-- Bootstrap  JavaScript Libraries -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -119,7 +85,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/classes/NavBar.js"></script>
   </body>
 </html>

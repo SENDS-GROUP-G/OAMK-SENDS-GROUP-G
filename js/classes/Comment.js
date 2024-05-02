@@ -12,6 +12,7 @@ export default class Comment {
   
     createCommentElement() {
       const nameText = document.createElement("p")
+      // Use the username from the comment data
       nameText.textContent = this.comment.user_name;
       nameText.className = "cmt-user-name";
       const commentText = document.createElement("pre");

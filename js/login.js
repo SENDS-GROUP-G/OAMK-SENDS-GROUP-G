@@ -4,8 +4,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 
   const password = document.getElementById("password").value;
   const email = document.getElementById("email").value;
-  fetch('https://sendsserver.onrender.com/users/login', {
-  //fetch("http://localhost:3001/users/login", {
+  // fetch('https://sendsserver.onrender.com/users/login', {
+  fetch("http://localhost:3001/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
         localStorage.setItem("user_id", data.user_id);
         localStorage.setItem("username", data.user_name);
         localStorage.setItem("user_email", data.email);
-        window.location.href = "index.html";
+        window.location.href = "main.html";
       } else {
         throw new Error(data.error);
       }

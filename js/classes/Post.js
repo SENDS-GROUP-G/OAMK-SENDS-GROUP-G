@@ -28,34 +28,33 @@ export default class Post {
     const diffInYears = Math.floor(diffInDays / 365);
 
     if (diffInYears === 1) return `a year ago`;
-    else if (diffInYears > 0) return  `${diffInYears} years ago`;
+    else if (diffInYears > 0) return `${diffInYears} years ago`;
 
     if (diffInMonths === 1) return `a month ago`;
-    else if (diffInMonths > 0) return  `${diffInMonths} months ago`;
+    else if (diffInMonths > 0) return `${diffInMonths} months ago`;
 
     if (diffInWeeks === 1) return `a week ago`;
-    else if (diffInWeeks > 0) return  `${diffInWeeks} weeks ago`;
+    else if (diffInWeeks > 0) return `${diffInWeeks} weeks ago`;
 
     if (diffInDays === 1) return `a day ago`;
-    else if (diffInDays > 0) return  `${diffInDays} days ago`;
-    
+    else if (diffInDays > 0) return `${diffInDays} days ago`;
+
     if (diffInHours === 1) return `an hour ago`;
-    else if (diffInHours > 0) return  `${diffInHours} hours ago`;
+    else if (diffInHours > 0) return `${diffInHours} hours ago`;
 
     if (diffInMinutes === 1) return `a minute ago`;
-    else if (diffInMinutes > 0) return  `${diffInMinutes} minutes ago`;
+    else if (diffInMinutes > 0) return `${diffInMinutes} minutes ago`;
 
     return `a moment ago`;
   }
 
-   async createPostElement() {
+  async createPostElement() {
     const deletePostButton = new Button("", "delBtn").getElement();
 
     deletePostButton.addEventListener("click", async () => {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
     });
-
 
     const editPostButton = new Button("Edit", "editBtn").getElement();
     editPostButton.addEventListener("click", async () => {
@@ -85,9 +84,10 @@ export default class Post {
     });
 
     const titleElement = this.createElement("h2", "card-title");
+    titleElement.textContent = this.post.title;
     const titleLink = this.createElement("a", "");
     titleLink.href = `/post.html?post_id=${this.post.post_id}`;
-    
+
     titleLink.addEventListener("click", (e) => {
       if (titleLink.classList.contains("disabled-link")) {
         e.preventDefault();
@@ -95,14 +95,23 @@ export default class Post {
         window.location.href = `/post.html?post_id=${this.post.post_id}`;
       }
     });
-    
+
     titleLink.appendChild(titleElement);
     const contentElement = this.createElement("pre", "card-text");
+    contentElement.textContent = this.post.post_content;
     const userNameElement = this.createElement("span", "post-user-name");
-    const user = await API.fetchUser(this.post.user_id);
-    this.post.user_name = user.user_name;
-    userNameElement.textContent = `${this.post.user_name}`;
+    const userResponse = await API.fetchUser(this.post.user_id);
+    if (userResponse && userResponse.user && userResponse.user.user_name) {
+      this.post.user_name = userResponse.user.user_name;
+      userNameElement.textContent = `${this.post.user_name}`;
+    } else {
+      console.log("User or username is undefined", userResponse);
+    }
 
+    const userNameLink = this.createElement("a", "");
+    userNameLink.href = `http://127.0.0.1:5502/user.html?user_id=${this.post.user_id}`;
+
+    userNameLink.appendChild(userNameElement);
     const timeAgoElement = this.createElement("span", "post-time-ago");
     timeAgoElement.textContent = `• ${this.timeAgo(this.post.saved)}`;
 
@@ -117,15 +126,13 @@ export default class Post {
       commentsElement.appendChild(commentItem);
     });
 
-
     const reactButton = new Button("", "reactBtn card-button").getElement();
     const reactIcon = this.createElement("img", "icons");
     const reactedIcon = this.createElement("img", "icons none");
     reactIcon.src = "icons/react.svg";
     reactedIcon.src = "icons/reacted.svg";
-    const reactNumber = this.createElement("p","react-number");
-    reactButton.append(reactIcon,reactedIcon,reactNumber);
-    
+    const reactNumber = this.createElement("p", "react-number");
+    reactButton.append(reactIcon, reactedIcon, reactNumber);
 
     let hasReacted = false;
     let reactionCount = 0;
@@ -135,12 +142,8 @@ export default class Post {
       reactButton.className = hasReacted
         ? "reactBtn card-button true"
         : "reactBtn card-button";
-      reactedIcon.className = hasReacted
-      ? "icons"
-      : "icons none";
-      reactIcon.className = hasReacted
-      ? "icons none"
-      : "icons";
+      reactedIcon.className = hasReacted ? "icons" : "icons none";
+      reactIcon.className = hasReacted ? "icons none" : "icons";
     };
 
     reactButton.addEventListener("click", async () => {
@@ -148,7 +151,7 @@ export default class Post {
         await API.removeReactcion(this.post.post_id);
         reactionCount--;
       } else {
-        await API.addReaction(this.post.post_id, 1); 
+        await API.addReaction(this.post.post_id, 1);
         reactionCount++;
       }
       hasReacted = !hasReacted;
@@ -165,29 +168,26 @@ export default class Post {
     commentIcon.src = "icons/comment.svg";
     commentButton.append(commentIcon);
     const commentInput = document.createElement("textarea");
-    commentInput.addEventListener("input", function() {
+    commentInput.addEventListener("input", function () {
       const currentContent = commentInput.value;
       let previousContent = "";
       if (commentInput.value && currentContent !== previousContent) {
         previousContent = currentContent;
         commentInput.style.height = `${commentInput.scrollHeight}px`;
         window.requestAnimationFrame(() => {
-          commentInput.style.height = null; // Trigger reflow
+          commentInput.style.height = null;
           commentInput.style.height = `${commentInput.scrollHeight}px`;
-      });
-    } else {
-        // If there's no input, reset to default height
+        });
+      } else {
         commentInput.style.height = `0px`;
       }
     });
     commentInput.classList.add("cmt-input");
-    commentInput.placeholder = `Comment as ${this.post.user_name}`;
+    const commentusername = localStorage.getItem("username");
+    commentInput.placeholder = `Comment as ${commentusername}`;
     commentInput.style.display = "none";
 
-    const postCommentButton = new Button(
-      "",
-      "postCmtBtn"
-    ).getElement();
+    const postCommentButton = new Button("", "postCmtBtn").getElement();
     postCommentButton.style.display = "none";
 
     commentButton.addEventListener("click", () => {
@@ -223,19 +223,14 @@ export default class Post {
           commentInput.style.height = `0px`;
         } else {
           alert("Failed to post comment.");
+        }
+      }
+    });
+    const buttons = this.createElement("div", "buttons");
+    buttons.append(reactButton, commentButton);
 
-    const buttons = this.createElement("div","buttons");
-    buttons.append(
-      reactButton,
-      commentButton
-    );
-
-    const userNameContainer = this.createElement("div","user");
-    userNameContainer.append(
-      userNameElement,
-      timeAgoElement
-    );
-    
+    const userNameContainer = this.createElement("div", "user");
+    userNameContainer.append(userNameLink, timeAgoElement);
 
     this.postElement.append(
       deletePostButton,

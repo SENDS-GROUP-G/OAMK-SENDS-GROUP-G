@@ -1,6 +1,6 @@
 export default class API {
-  static backendUrl = "http://localhost:3001";
-  // static backendUrl = "https://sendsserver.onrender.com";
+  //static backendUrl = "http://localhost:3001";
+  static backendUrl = "https://sendsserver.onrender.com";
   static async sendRequest(url, method = "GET", body = null) {
     const options = { method, headers: { "Content-Type": "application/json" } };
     if (body) {

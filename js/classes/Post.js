@@ -1,7 +1,6 @@
 import Button from "./Button.js";
 import API from "./API.js";
 import Comment from "./Comment.js";
-
 export default class Post {
   constructor(post) {
     this.post = post;
@@ -120,6 +119,9 @@ export default class Post {
 
     const userNameLink = this.createElement("a", "");
     userNameLink.href = `http://127.0.0.1:5502/user.html?user_id=${this.post.user_id}`;
+
+    const avatarElement = this.createElement("img", "avatar");
+    avatarElement.src = `./avatars/${this.post.avatar}.png`;
 
     userNameLink.appendChild(userNameElement);
     const timeAgoElement = this.createElement("span", "post-time-ago");
@@ -240,7 +242,7 @@ export default class Post {
     buttons.append(reactButton, commentButton);
 
     const userNameContainer = this.createElement("div", "user");
-    userNameContainer.append(userNameLink, timeAgoElement);
+    userNameContainer.append(avatarElement, userNameLink, timeAgoElement);
 
     this.postElement.append(
       deletePostButton,

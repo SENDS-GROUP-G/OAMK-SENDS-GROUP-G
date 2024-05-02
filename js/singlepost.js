@@ -5,6 +5,7 @@ window.onload = async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const postId = urlParams.get("post_id");
   const post = await API.fetchPost(postId);
+  document.title = post.title;
   const postElement = new Post(post).getPostElement();
   document.getElementById("post").appendChild(postElement);
 };

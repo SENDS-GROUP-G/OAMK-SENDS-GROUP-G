@@ -8,6 +8,7 @@ window.onload = async () => {
     const userData = await API.fetchUser(userId);
     const user = userData.user;
     const posts = userData.posts;
+    document.title = user.user_name;
     document.getElementById("userInfo").innerHTML = `<h1>User: ${user.user_name}</h1><p>Email: ${user.email}</p>`;
     const postsContainer = document.getElementById("userPosts");
     posts.forEach(async (postId) => {

@@ -7,8 +7,8 @@ document
     const username = document.getElementById("user_name").value;
     const password = document.getElementById("password").value;
     const email = document.getElementById("email").value;
-    fetch('https://sendsserver.onrender.com/register', {
-    // fetch("http://localhost:3001/register", {
+    // fetch('https://sendsserver.onrender.com/register', {
+    fetch("http://localhost:3001/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

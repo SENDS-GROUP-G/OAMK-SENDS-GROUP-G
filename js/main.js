@@ -5,10 +5,12 @@ window.onload = function() {
     if (userId) {
       document.getElementById('signup').style.display = 'none';
       document.getElementById('login').style.display = 'none';
+      document.getElementById('setting').style.display = 'flex';
       document.getElementById('logout').style.display = 'flex';
     } else {
       document.getElementById('signup').style.display = 'flex';
       document.getElementById('login').style.display = 'flex';
+      document.getElementById('setting').style.display = 'none';
       document.getElementById('logout').style.display = 'none';
     }
   };

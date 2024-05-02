@@ -11,9 +11,9 @@ export default class Comment {
     }
   
     createCommentElement() {
-      const nameText = document.createElement("p")
+      const nameText = document.createElement("span")
       nameText.textContent = this.comment.user_name;
-      nameText.className = "cmt-user-name";
+      nameText.className = "cmt-name";
       const commentText = document.createElement("pre");
       commentText.textContent = this.comment.comment_content;
       commentText.className = "cmt-text";
@@ -51,9 +51,16 @@ export default class Comment {
           );
         }
       });
-  
-      this.commentItem.append(nameText, commentText, editCommentButton, deleteButton);
+      
+      const commentName = document.createElement("div");
+      commentName.classList.add("cmt-n-name");
+      commentName.append(nameText, commentText);
 
+      const avatarElement = document.createElement("img");
+      avatarElement.className = "avatar";
+      avatarElement.src = `./avatars/${this.comment.avatar}.png`;
+
+      this.commentItem.append(avatarElement, commentName, editCommentButton, deleteButton);
     }
   
     getCommentItem() {

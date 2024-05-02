@@ -1,11 +1,12 @@
-import Button from "./Button.js";
-import API from "./API.js";
-import Comment from "./Comment.js";
+import Button from './Button.js';
+import API from './API.js';
+import Comment from './Comment.js';
 
 export default class Post {
   constructor(post) {
     this.post = post;
     this.postElement = this.createElement("div", "card");
+    this.saveEdit = null;
     this.createPostElement();
   }
 
@@ -50,12 +51,10 @@ export default class Post {
 
    async createPostElement() {
     const deletePostButton = new Button("", "delBtn").getElement();
-
     deletePostButton.addEventListener("click", async () => {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
     });
-
 
     const editPostButton = new Button("Edit", "editBtn").getElement();
     editPostButton.addEventListener("click", async () => {
@@ -73,41 +72,44 @@ export default class Post {
         titleLink.classList.remove("disabled-link");
         deletePostButton.style.display = "block";
         editPostButton.classList.replace("saveBtn", "editBtn");
-
-        const updatedPost = await API.editPost(
-          this.post.post_id,
-          titleElement.textContent,
-          contentElement.textContent
-        );
-
         userNameElement.textContent = `${this.post.user_name}`;
       }
     });
 
-    const titleElement = this.createElement("h2", "card-title");
+    const titleElement = this.createElement("h3", "card-title");
     const titleLink = this.createElement("a", "");
-    titleLink.href = `/post.html?post_id=${this.post.post_id}`;
+    titleLink.href = `post.html?post_id=${this.post.post_id}`;
     
     titleLink.addEventListener("click", (e) => {
       if (titleLink.classList.contains("disabled-link")) {
         e.preventDefault();
       } else {
-        window.location.href = `/post.html?post_id=${this.post.post_id}`;
+        window.location.href = `post.html?post_id=${this.post.post_id}`;
       }
     });
     
     titleLink.appendChild(titleElement);
     const contentElement = this.createElement("pre", "card-text");
     const userNameElement = this.createElement("span", "post-user-name");
-    const user = await API.fetchUser(this.post.user_id);
-    this.post.user_name = user.user_name;
-    userNameElement.textContent = `${this.post.user_name}`;
+    const userResponse = await API.fetchUser(this.post.user_id);
+    if (userResponse && userResponse.user && userResponse.user.user_name) {
+      this.post.user_name = userResponse.user.user_name;
+      userNameElement.textContent = `${this.post.user_name}`;
+    } else {
+      console.log("User or username is undefined", userResponse);
+    }
+    const userNameLink = this.createElement("a", "");
+    userNameLink.href = `user.html?user_id=${this.post.user_id}`;
+    
+    const avatarElement = this.createElement("img", "avatar");
+    avatarElement.src = `./avatars/${this.post.avatar}.png`;
+
+    userNameLink.appendChild(userNameElement);
 
     const timeAgoElement = this.createElement("span", "post-time-ago");
     timeAgoElement.textContent = `• ${this.timeAgo(this.post.saved)}`;
 
     const commentsElement = this.createElement("div", "cmt-list");
-
     const comments = await API.fetchComments(this.post.post_id);
     comments.forEach((comment) => {
       const commentItem = new Comment(
@@ -117,7 +119,6 @@ export default class Post {
       commentsElement.appendChild(commentItem);
     });
 
-
     const reactButton = new Button("", "reactBtn card-button").getElement();
     const reactIcon = this.createElement("img", "icons");
     const reactedIcon = this.createElement("img", "icons none");
@@ -126,7 +127,6 @@ export default class Post {
     const reactNumber = this.createElement("p","react-number");
     reactButton.append(reactIcon,reactedIcon,reactNumber);
     
-
     let hasReacted = false;
     let reactionCount = 0;
 
@@ -180,8 +180,16 @@ export default class Post {
         commentInput.style.height = `0px`;
       }
     });
+
+    commentInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        this.value += "\n"; // Add two newlines to the textarea content
+      }
+    });
+
     commentInput.classList.add("cmt-input");
-    commentInput.placeholder = `Comment as ${this.post.user_name}`;
+    const commentusername = localStorage.getItem("username");
+    commentInput.placeholder = `Comment as ${commentusername}`;
     commentInput.style.display = "none";
 
     const postCommentButton = new Button(
@@ -219,10 +227,17 @@ export default class Post {
           commentButton.classList.remove("true");
           commentInput.style.display = "none";
           postCommentButton.style.display = "none";
-
           commentInput.style.height = `0px`;
         } else {
           alert("Failed to post comment.");
+        }
+      } else {
+        alert("Please enter a comment.");
+      }
+    });
+
+    titleElement.textContent = this.post.title;
+    contentElement.textContent = this.post.post_content;
 
     const buttons = this.createElement("div","buttons");
     buttons.append(
@@ -232,7 +247,8 @@ export default class Post {
 
     const userNameContainer = this.createElement("div","user");
     userNameContainer.append(
-      userNameElement,
+      avatarElement,
+      userNameLink,
       timeAgoElement
     );
     
@@ -245,7 +261,6 @@ export default class Post {
       editPostButton,
       buttons,
       commentsElement,
-
       commentInput,
       postCommentButton
     );

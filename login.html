@@ -1,15 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-  <head>
-    <title>Login</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-
+    <head>
+        <title>Log in to SENDS</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
 
         <!-- Bootstrap CSS v5.2.1 -->
         <link
@@ -18,73 +16,43 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
+
+        <link rel="stylesheet" href="css/styles.css" />
     </head>
 
-
-  <body>
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Logo</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="index.html">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="search.html">Search</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="feedback" href="feedback.html">Feedback</a>
-            </li>
-            <li class="nav-item" id="settings">
-              <a class="nav-link" href="settings.html">Login</a>
-            </li>
-            <li class="nav-item" id="signup">
-              <a class="nav-link" href="signup.html">Sign up</a>
-            </li>
-            <li class="nav-item" id="login">
-              <a class="nav-link" href="login.html">Login</a>
-            </li>
-            <li class="nav-item" id="logout" style="display: none;">
-              <a class="nav-link" href="#" onclick="logout()">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <main>
-      <div class="container">
-        <h2>Login</h2>
-        <form id="loginForm">
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              required
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
-    </main>
-    <footer>
-      <!-- place footer here -->
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
+    <body style="background-color: #313030;">
+      <div id="background3"></div>
+        <header>
+        </header>
+        <main>
+            <div class="log-container">
+              <div id="logoinlog-container"><img id="logoinlog" src="icons/sen-logo.svg" alt=""></div>
+              <div id="log-title"><h1>Log </h1><h2>In</h2></div>
+              <form id="loginForm">
+                  <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="" id="email" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="password" class="" id="password" required>
+                  </div>
+                  <button id="submit" class="">Log in</button>
+              </form>
+              <div id="ll-container">
+                <span id="last-line">New to SENDS?<a id="ll-link" href="signup.html">Sign Up</a></span>
+              </div>
+            </div>
+        </main>
+        <footer>
+            <!-- place footer here -->
+        </footer>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
@@ -92,7 +60,6 @@
             crossorigin="anonymous"
         ></script>
 
-    <script src="js/login.js"></script>
-    <script src="js/navbar.js"></script>
-  </body>
+        <script src="js/login.js"></script>
+    </body>
 </html>

@@ -23,6 +23,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
         localStorage.setItem("user_id", data.user_id);
         localStorage.setItem("username", data.user_name);
         localStorage.setItem("user_email", data.email);
+        localStorage.setItem("avatar", data.avatar);
         window.location.href = "main.html";
       } else {
         throw new Error(data.error);

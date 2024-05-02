@@ -45,7 +45,7 @@ function displayResults(userResults, postResults) {
     usersText.classList.add("text");
     usersText.textContent = `${user.user_name}`;
     users.className = "result";
-    users.href = `/user.html?user_id=${user.user_id}`;
+    users.href = `user.html?user_id=${user.user_id}`;
     users.append(usersIcon,usersText);
     resultsContainer.appendChild(users);
     resultsElement.appendChild(resultsContainer);
@@ -61,11 +61,10 @@ function displayResults(userResults, postResults) {
     postsText.classList.add("text");
     postsText.textContent = `${post.title}`;
     posts.className = "result";
-    posts.href = `/post.html?post_id=${post.post_id}`;
+    posts.href = `post.html?post_id=${post.post_id}`;
     posts.append(postsIcon,postsText);
     resultsContainer.appendChild(posts);
     resultsElement.appendChild(resultsContainer);
   });
   
-
 }

@@ -1,10 +1,12 @@
-import Button from "./Button.js";
-import API from "./API.js";
-import Comment from "./Comment.js";
+import Button from './Button.js';
+import API from './API.js';
+import Comment from './Comment.js';
+
 export default class Post {
   constructor(post) {
     this.post = post;
     this.postElement = this.createElement("div", "card");
+    this.saveEdit = null;
     this.createPostElement();
   }
 
@@ -27,31 +29,28 @@ export default class Post {
     const diffInYears = Math.floor(diffInDays / 365);
 
     if (diffInYears === 1) return `a year ago`;
-    else if (diffInYears > 0) return `${diffInYears} years ago`;
+    else if (diffInYears > 0) return  `${diffInYears} years ago`;
 
     if (diffInMonths === 1) return `a month ago`;
-    else if (diffInMonths > 0) return `${diffInMonths} months ago`;
+    else if (diffInMonths > 0) return  `${diffInMonths} months ago`;
 
     if (diffInWeeks === 1) return `a week ago`;
-    else if (diffInWeeks > 0) return `${diffInWeeks} weeks ago`;
+    else if (diffInWeeks > 0) return  `${diffInWeeks} weeks ago`;
 
     if (diffInDays === 1) return `a day ago`;
-    else if (diffInDays > 0) return `${diffInDays} days ago`;
-
+    else if (diffInDays > 0) return  `${diffInDays} days ago`;
+    
     if (diffInHours === 1) return `an hour ago`;
-    else if (diffInHours > 0) return `${diffInHours} hours ago`;
+    else if (diffInHours > 0) return  `${diffInHours} hours ago`;
 
     if (diffInMinutes === 1) return `a minute ago`;
-    else if (diffInMinutes > 0) return `${diffInMinutes} minutes ago`;
+    else if (diffInMinutes > 0) return  `${diffInMinutes} minutes ago`;
 
     return `a moment ago`;
   }
 
-  async createPostElement() {
-    const loggedInUserId = localStorage.getItem("user_id");
-
+   async createPostElement() {
     const deletePostButton = new Button("", "delBtn").getElement();
-
     deletePostButton.addEventListener("click", async () => {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
@@ -73,41 +72,24 @@ export default class Post {
         titleLink.classList.remove("disabled-link");
         deletePostButton.style.display = "block";
         editPostButton.classList.replace("saveBtn", "editBtn");
-
-        const updatedPost = await API.editPost(
-          this.post.post_id,
-          titleElement.textContent,
-          contentElement.textContent
-        );
-
         userNameElement.textContent = `${this.post.user_name}`;
       }
     });
 
-    deletePostButton.style.display = "none";
-    editPostButton.style.display = "none";
-
-    if (Number(loggedInUserId) === Number(this.post.user_id)) {
-      deletePostButton.style.display = "block";
-      editPostButton.style.display = "block";
-    }
-
-    const titleElement = this.createElement("h2", "card-title");
-    titleElement.textContent = this.post.title;
+    const titleElement = this.createElement("h3", "card-title");
     const titleLink = this.createElement("a", "");
-    titleLink.href = `/post.html?post_id=${this.post.post_id}`;
-
+    titleLink.href = `post.html?post_id=${this.post.post_id}`;
+    
     titleLink.addEventListener("click", (e) => {
       if (titleLink.classList.contains("disabled-link")) {
         e.preventDefault();
       } else {
-        window.location.href = `/post.html?post_id=${this.post.post_id}`;
+        window.location.href = `post.html?post_id=${this.post.post_id}`;
       }
     });
-
+    
     titleLink.appendChild(titleElement);
     const contentElement = this.createElement("pre", "card-text");
-    contentElement.textContent = this.post.post_content;
     const userNameElement = this.createElement("span", "post-user-name");
     const userResponse = await API.fetchUser(this.post.user_id);
     if (userResponse && userResponse.user && userResponse.user.user_name) {
@@ -116,19 +98,18 @@ export default class Post {
     } else {
       console.log("User or username is undefined", userResponse);
     }
-
     const userNameLink = this.createElement("a", "");
-    userNameLink.href = `http://127.0.0.1:5502/user.html?user_id=${this.post.user_id}`;
-
+    userNameLink.href = `user.html?user_id=${this.post.user_id}`;
+    
     const avatarElement = this.createElement("img", "avatar");
     avatarElement.src = `./avatars/${this.post.avatar}.png`;
 
     userNameLink.appendChild(userNameElement);
+
     const timeAgoElement = this.createElement("span", "post-time-ago");
     timeAgoElement.textContent = `• ${this.timeAgo(this.post.saved)}`;
 
     const commentsElement = this.createElement("div", "cmt-list");
-
     const comments = await API.fetchComments(this.post.post_id);
     comments.forEach((comment) => {
       const commentItem = new Comment(
@@ -143,9 +124,9 @@ export default class Post {
     const reactedIcon = this.createElement("img", "icons none");
     reactIcon.src = "icons/react.svg";
     reactedIcon.src = "icons/reacted.svg";
-    const reactNumber = this.createElement("p", "react-number");
-    reactButton.append(reactIcon, reactedIcon, reactNumber);
-
+    const reactNumber = this.createElement("p","react-number");
+    reactButton.append(reactIcon,reactedIcon,reactNumber);
+    
     let hasReacted = false;
     let reactionCount = 0;
 
@@ -154,8 +135,12 @@ export default class Post {
       reactButton.className = hasReacted
         ? "reactBtn card-button true"
         : "reactBtn card-button";
-      reactedIcon.className = hasReacted ? "icons" : "icons none";
-      reactIcon.className = hasReacted ? "icons none" : "icons";
+      reactedIcon.className = hasReacted
+      ? "icons"
+      : "icons none";
+      reactIcon.className = hasReacted
+      ? "icons none"
+      : "icons";
     };
 
     reactButton.addEventListener("click", async () => {
@@ -163,7 +148,7 @@ export default class Post {
         await API.removeReactcion(this.post.post_id);
         reactionCount--;
       } else {
-        await API.addReaction(this.post.post_id, 1);
+        await API.addReaction(this.post.post_id, 1); 
         reactionCount++;
       }
       hasReacted = !hasReacted;
@@ -180,26 +165,37 @@ export default class Post {
     commentIcon.src = "icons/comment.svg";
     commentButton.append(commentIcon);
     const commentInput = document.createElement("textarea");
-    commentInput.addEventListener("input", function () {
+    commentInput.addEventListener("input", function() {
       const currentContent = commentInput.value;
       let previousContent = "";
       if (commentInput.value && currentContent !== previousContent) {
         previousContent = currentContent;
         commentInput.style.height = `${commentInput.scrollHeight}px`;
         window.requestAnimationFrame(() => {
-          commentInput.style.height = null;
+          commentInput.style.height = null; // Trigger reflow
           commentInput.style.height = `${commentInput.scrollHeight}px`;
-        });
-      } else {
+      });
+    } else {
+        // If there's no input, reset to default height
         commentInput.style.height = `0px`;
       }
     });
+
+    commentInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        this.value += "\n"; // Add two newlines to the textarea content
+      }
+    });
+
     commentInput.classList.add("cmt-input");
     const commentusername = localStorage.getItem("username");
     commentInput.placeholder = `Comment as ${commentusername}`;
     commentInput.style.display = "none";
 
-    const postCommentButton = new Button("", "postCmtBtn").getElement();
+    const postCommentButton = new Button(
+      "",
+      "postCmtBtn"
+    ).getElement();
     postCommentButton.style.display = "none";
 
     commentButton.addEventListener("click", () => {
@@ -231,18 +227,31 @@ export default class Post {
           commentButton.classList.remove("true");
           commentInput.style.display = "none";
           postCommentButton.style.display = "none";
-
           commentInput.style.height = `0px`;
         } else {
           alert("Failed to post comment.");
         }
+      } else {
+        alert("Please enter a comment.");
       }
     });
-    const buttons = this.createElement("div", "buttons");
-    buttons.append(reactButton, commentButton);
 
-    const userNameContainer = this.createElement("div", "user");
-    userNameContainer.append(avatarElement, userNameLink, timeAgoElement);
+    titleElement.textContent = this.post.title;
+    contentElement.textContent = this.post.post_content;
+
+    const buttons = this.createElement("div","buttons");
+    buttons.append(
+      reactButton,
+      commentButton
+    );
+
+    const userNameContainer = this.createElement("div","user");
+    userNameContainer.append(
+      avatarElement,
+      userNameLink,
+      timeAgoElement
+    );
+    
 
     this.postElement.append(
       deletePostButton,
@@ -252,7 +261,6 @@ export default class Post {
       editPostButton,
       buttons,
       commentsElement,
-
       commentInput,
       postCommentButton
     );

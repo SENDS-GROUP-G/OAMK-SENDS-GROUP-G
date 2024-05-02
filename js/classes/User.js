@@ -1,5 +1,5 @@
-//const BACKEND_URL = 'http://localhost:3001'
-const BACKEND_URL = 'https://sendsserver.onrender.com'
+const BACKEND_URL = 'http://localhost:3001'
+// const BACKEND_URL = 'https://sendsserver.onrender.com'
 
 class User {
   #id = undefined

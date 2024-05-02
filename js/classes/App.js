@@ -63,6 +63,12 @@ export default class App {
         postContent.style.height = `0px`;
       }
     });
+
+    postContent.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        this.value += "\n"; // Add two newlines to the textarea content
+      }
+    });
     
   }
 }

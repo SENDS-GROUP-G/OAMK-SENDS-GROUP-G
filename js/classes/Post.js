@@ -49,6 +49,8 @@ export default class Post {
   }
 
   async createPostElement() {
+    const loggedInUserId = localStorage.getItem("user_id");
+
     const deletePostButton = new Button("", "delBtn").getElement();
 
     deletePostButton.addEventListener("click", async () => {
@@ -82,6 +84,14 @@ export default class Post {
         userNameElement.textContent = `${this.post.user_name}`;
       }
     });
+
+    deletePostButton.style.display = "none";
+    editPostButton.style.display = "none";
+
+    if (Number(loggedInUserId) === Number(this.post.user_id)) {
+      deletePostButton.style.display = "block";
+      editPostButton.style.display = "block";
+    }
 
     const titleElement = this.createElement("h2", "card-title");
     titleElement.textContent = this.post.title;

@@ -55,6 +55,7 @@ export default class Post {
       await API.deletePost(this.post.post_id);
       this.postElement.remove();
     });
+    const loggedInUserId = localStorage.getItem("user_id");
 
     const editPostButton = new Button("Edit", "editBtn").getElement();
     editPostButton.addEventListener("click", async () => {
@@ -209,6 +210,10 @@ export default class Post {
         postCommentButton.style.display = "none";
       }
     });
+    if (Number(loggedInUserId) !== Number(this.post.user_id)) {
+      deletePostButton.style.display = "none";
+      editPostButton.style.display = "none";
+    }
 
     postCommentButton.addEventListener("click", async () => {
       const commentContent = commentInput.value;
